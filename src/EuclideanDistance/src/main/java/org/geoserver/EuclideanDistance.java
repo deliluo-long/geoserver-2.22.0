@@ -44,7 +44,7 @@ public class EuclideanDistance implements GeoServerProcess {
     public GridCoverage2D execute(@DescribeParameter(name = "inputGridCoverage", description = "输入待分析影像") GridCoverage2D inputGridCoverage,
                                   @DescribeParameter(name = "sourcePixelValue", description = "输入邻近分析栅格值") int sourcePixelValue) throws Exception {
         try {
-            convertToTiff(inputGridCoverage, "./src/main/webapp/data/python/inputGridCoverage.tif");
+            convertToTiff(inputGridCoverage, "./src/main/webapp/data/python/euclidean_distance/inputGridCoverage.tif");
             // 构造 ProcessBuilder 对象
             ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "D:\\Program Files\\QGIS\\bin\\python-qgis.bat", "./src/main/webapp/data/python/euclidean_Distance.py");
             // 启动进程
@@ -72,7 +72,7 @@ public class EuclideanDistance implements GeoServerProcess {
             int exitCode = process.waitFor();
             if (exitCode == 0) {
                 System.out.println("Python 脚本运行成功！");
-                File file = new File("./src/main/webapp/data/python/outputGridCoverage.tif");
+                File file = new File("./src/main/webapp/data/python/euclidean_distance/outputGridCoverage.tif");
                 AbstractGridFormat format = GridFormatFinder.findFormat(file);
                 Hints hints = null;
                 if (format instanceof GeoTiffFormat) {
@@ -82,6 +82,13 @@ public class EuclideanDistance implements GeoServerProcess {
                 GridCoverage2D ouputGridCoverage = (GridCoverage2D) fileReader.read(null);
                 // 关闭资源
                 fileReader.dispose();
+                fileReader.dispose(); // 添加这一行，确保资源已经释放
+
+                // 删除文件
+                if (file.exists()) {
+                    file.delete();
+                }
+
                 return ouputGridCoverage;
             } else {
                 System.err.println("Python 脚本运行失败，错误码：" + exitCode);

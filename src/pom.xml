@@ -53,6 +53,12 @@
       <module>EuclideanDistance</module>
       <module>CoverageClip</module>
       <module>PointExtraction</module>
+      <module>RangeCoverageClip</module>
+    <module>Reprojection</module>
+    <module>CalcSlope</module>
+    <module>CalcSlope</module>
+    <module>CalcSlope</module>
+    <!--    <module>RangeCoverageClip</module>-->
   </modules>
 
   <scm>

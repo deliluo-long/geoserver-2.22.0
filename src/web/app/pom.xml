@@ -71,10 +71,28 @@
       <artifactId>CoverageClip</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <!--    提取栅格-->
+    <!--    提取栅格到点-->
     <dependency>
       <groupId>org.geoserver</groupId>
       <artifactId>PointExtraction</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!--    按范围裁剪栅格-->
+    <dependency>
+      <groupId>org.geoserver</groupId>
+      <artifactId>RangeCoverageClip</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!--    重投影-->
+    <dependency>
+      <groupId>org.geoserver</groupId>
+      <artifactId>Reprojection</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!--    坡度分析-->
+    <dependency>
+      <groupId>org.geoserver</groupId>
+      <artifactId>CalcSlope</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
