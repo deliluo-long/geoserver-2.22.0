@@ -37,7 +37,8 @@ public class CoverageClip implements GeoServerProcess {
             name = "outputGridCoverage",
             description = "输出裁剪结果"
     )
-    public GridCoverage2D execute(@DescribeParameter(name = "inputGridCoverage",description = "输入待裁剪数据") GridCoverage2D inputGridCoverage, @DescribeParameter(name = "clipBoundry",description = "输入裁剪范围") SimpleFeatureCollection clipBoundry) throws Exception {
+    public GridCoverage2D execute(@DescribeParameter(name = "inputGridCoverage",description = "输入待裁剪数据") GridCoverage2D inputGridCoverage,
+                                  @DescribeParameter(name = "clipBoundary",description = "输入裁剪范围") SimpleFeatureCollection clipBoundry) throws Exception {
         FeatureIterator<SimpleFeature> iterator = clipBoundry.features();
         List<Geometry> all = new ArrayList();
 
