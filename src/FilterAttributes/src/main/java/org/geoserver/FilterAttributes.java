@@ -33,7 +33,8 @@ public class FilterAttributes implements GeoServerProcess {
             name = "outputFeatures",
             description = "输出筛选数据"
     )
-    public SimpleFeatureCollection execute(@DescribeParameter(name = "inputFeatures",description = "输入待筛选数据") SimpleFeatureCollection inputFeatures, @DescribeParameter(name = "minValidCount",description = "输入最小记录限度") int minValidCount) throws Exception {
+    public SimpleFeatureCollection execute(@DescribeParameter(name = "inputFeatures",description = "输入待筛选数据") SimpleFeatureCollection inputFeatures,
+                                           @DescribeParameter(name = "percentage",description = "输入百分比阈值") int percentage) throws Exception {
         int numAttributes = ((SimpleFeatureType)inputFeatures.getSchema()).getAttributeCount();
         int[] validCounts = new int[numAttributes];
         SimpleFeatureIterator it = inputFeatures.features();
@@ -73,7 +74,8 @@ public class FilterAttributes implements GeoServerProcess {
         schemaBuilder.setName(inputSchema.getName());
         List<AttributeDescriptor> attributeDescriptors = new ArrayList();
         List<Integer> retainIndices = new ArrayList();
-
+        System.out.println(numAttributes);
+        int minValidCount= (inputFeatures.size()* percentage) / 100;;
         for(int i = 0; i < numAttributes; ++i) {
             if (validCounts[i] >= minValidCount) {
                 retainIndices.add(i);

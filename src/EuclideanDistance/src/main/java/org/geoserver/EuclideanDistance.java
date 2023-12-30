@@ -46,7 +46,7 @@ public class EuclideanDistance implements GeoServerProcess {
         try {
             convertToTiff(inputGridCoverage, "./src/main/webapp/data/python/euclidean_distance/inputGridCoverage.tif");
             // 构造 ProcessBuilder 对象
-            ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "D:\\Program Files\\QGIS\\bin\\python-qgis.bat", "./src/main/webapp/data/python/euclidean_Distance.py");
+            ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "D:\\Program Files (x86)\\QGIS\\bin\\python-qgis.bat", "./src/main/webapp/data/python/euclidean_Distance.py");
             // 启动进程
             Process process = pb.start();
             //获取进程的输出流

@@ -42,7 +42,7 @@ public class Reprojection implements GeoServerProcess {
             CoordinateReferenceSystem targetCRSObj = CRS.decode(targetCRS);
 
             // 进行重投影
-            GridCoverage2D reprojectedCoverage = (GridCoverage2D) (GridCoverage2D) Operations.DEFAULT.resample(inputGridCoverage, targetCRSObj);
+            GridCoverage2D reprojectedCoverage = (GridCoverage2D)  Operations.DEFAULT.resample(inputGridCoverage, targetCRSObj);
 
             return reprojectedCoverage;
         } catch (Exception e) {

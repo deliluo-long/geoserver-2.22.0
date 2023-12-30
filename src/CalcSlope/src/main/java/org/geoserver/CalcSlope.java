@@ -87,7 +87,7 @@ import java.text.DecimalFormat;
             try {
                 convertToTiff(inputGridCoverage, "./src/main/webapp/data/python/calc_slope/inputGridCoverage.tif");
                 // 构造 ProcessBuilder 对象
-                ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "D:\\Program Files\\QGIS\\bin\\python-qgis.bat", "./src/main/webapp/data/python/calc_Slope.py");
+                ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "D:\\Program Files (x86)\\QGIS\\bin\\python-qgis.bat", "./src/main/webapp/data/python/calc_Slope.py");
                 // 启动进程
                 Process process = pb.start();
                 //获取进程的输出流

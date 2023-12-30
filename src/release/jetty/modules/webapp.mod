@@ -29,8 +29,8 @@ lib/jetty-webapp-${jetty.version}.jar
 ##
 ## The +=, operator appends to a CSV list with a comma as needed.
 ##
-#jetty.webapp.addSystemClasses+=,org.example.
-#jetty.webapp.addServerClasses+=,org.example.
+#jetty.webapp.addSystemClasses+=,org.geoserver.
+#jetty.webapp.addServerClasses+=,org.geoserver.
 
 [jpms]
 add-modules:java.instrument

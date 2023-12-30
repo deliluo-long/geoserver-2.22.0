@@ -95,6 +95,18 @@
       <artifactId>CalcSlope</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!--    重采样-->
+    <dependency>
+      <groupId>org.geoserver</groupId>
+      <artifactId>Resample</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!--    PCA评估-->
+    <dependency>
+      <groupId>org.geoserver</groupId>
+      <artifactId>PCA</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.geoserver.web</groupId>
       <artifactId>gs-web-demo</artifactId>
@@ -1888,4 +1900,20 @@
       </dependencies>
     </profile>
   </profiles>
+  <repositories>
+    <repository>
+      <id>osgeo</id>
+      <name>OSGeo Release Repository</name>
+      <url>https://repo.osgeo.org/repository/release/</url>
+      <snapshots><enabled>false</enabled></snapshots>
+      <releases><enabled>true</enabled></releases>
+    </repository>
+    <repository>
+      <id>osgeo-snapshot</id>
+      <name>OSGeo Snapshot Repository</name>
+      <url>https://repo.osgeo.org/repository/snapshot/</url>
+      <snapshots><enabled>true</enabled></snapshots>
+      <releases><enabled>false</enabled></releases>
+    </repository>
+  </repositories>
 </project>

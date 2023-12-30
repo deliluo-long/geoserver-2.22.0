@@ -38,30 +38,77 @@ public class PointExtraction implements GeoServerProcess {
             name = "outputFeatures",
             description = "输出矢量数据"
     )
-    public SimpleFeatureCollection execute(@DescribeParameter(name = "inputFeatures",description = "输入矢量数据") SimpleFeatureCollection pointshp, @DescribeParameter(name = "inputRaster1",description = "输入遥感影像",max = 1,min = 1) GridCoverage2D raster1, @DescribeParameter(name = "inputRaster2",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster2, @DescribeParameter(name = "inputRaster3",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster3, @DescribeParameter(name = "inputRaster4",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster4) throws Exception {
+    public SimpleFeatureCollection execute(@DescribeParameter(name = "inputFeatures",description = "输入矢量数据") SimpleFeatureCollection pointshp,
+                                           @DescribeParameter(name = "inputRaster1",description = "输入遥感影像",max = 1,min = 1) GridCoverage2D raster1,
+                                           @DescribeParameter(name = "inputRasterName1",description = "输入对应字段名",max = 1,min = 1) String rasterName1,
+                                           @DescribeParameter(name = "inputRaster2",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster2,
+                                           @DescribeParameter(name = "inputRasterName2",description = "输入对应字段名",max = 1,min = 0) String rasterName2,
+                                           @DescribeParameter(name = "inputRaster3",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster3,
+                                           @DescribeParameter(name = "inputRasterName3",description = "输入对应字段名",max = 1,min = 0) String rasterName3,
+                                           @DescribeParameter(name = "inputRaster4",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster4,
+                                           @DescribeParameter(name = "inputRasterName4",description = "输入对应字段名",max = 1,min = 0) String rasterName4,
+                                           @DescribeParameter(name = "inputRaster5",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster5,
+                                           @DescribeParameter(name = "inputRasterName5",description = "输入对应字段名",max = 1,min = 0) String rasterName5,
+                                           @DescribeParameter(name = "inputRaster6",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster6,
+                                           @DescribeParameter(name = "inputRasterName6",description = "输入对应字段名",max = 1,min = 0) String rasterName6,
+                                           @DescribeParameter(name = "inputRaster7",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster7,
+                                           @DescribeParameter(name = "inputRasterName7",description = "输入对应字段名",max = 1,min = 0) String rasterName7,
+                                           @DescribeParameter(name = "inputRaster8",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster8,
+                                           @DescribeParameter(name = "inputRasterName8",description = "输入对应字段名",max = 1,min = 0) String rasterName8,
+                                           @DescribeParameter(name = "inputRaster9",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster9,
+                                           @DescribeParameter(name = "inputRasterName9",description = "输入对应字段名",max = 1,min = 0) String rasterName9,
+                                           @DescribeParameter(name = "inputRaster10",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster10,
+                                           @DescribeParameter(name = "inputRasterName10",description = "输入对应字段名",max = 1,min = 0) String rasterName10) throws Exception {
         List<GridCoverage2D> rasterList = new ArrayList();
+        List<String> rasterNameList = new ArrayList();
         rasterList.add(raster1);
+        rasterNameList.add(rasterName1);
         if (raster2 != null) {
             rasterList.add(raster2);
+            rasterNameList.add(rasterName2);
         }
-
         if (raster3 != null) {
             rasterList.add(raster3);
+            rasterNameList.add(rasterName3);
         }
 
         if (raster4 != null) {
             rasterList.add(raster4);
+            rasterNameList.add(rasterName4);
+        }
+        if (raster5 != null) {
+            rasterList.add(raster5);
+            rasterNameList.add(rasterName5);
         }
 
+        if (raster6 != null) {
+            rasterList.add(raster6);
+            rasterNameList.add(rasterName6);
+        }
+
+        if (raster7 != null) {
+            rasterList.add(raster7);
+            rasterNameList.add(rasterName7);
+        }
+        if (raster8 != null) {
+            rasterList.add(raster8);
+            rasterNameList.add(rasterName8);
+        }
+
+        if (raster9 != null) {
+            rasterList.add(raster9);
+            rasterNameList.add(rasterName9);
+        }
+
+        if (raster10 != null) {
+            rasterList.add(raster10);
+            rasterNameList.add(rasterName10);
+        }
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("PointWithRasterValue");
         builder.addAll(((SimpleFeatureType)pointshp.getSchema()).getAttributeDescriptors());
-        Iterator var8 = rasterList.iterator();
-
-        while(var8.hasNext()) {
-            GridCoverage2D raster = (GridCoverage2D)var8.next();
-            String fieldName = raster.getName().toString() + "_RasterValue";
-            builder.add(fieldName, Float.class);
+        for (String rasterName : rasterNameList) {
+            builder.add(rasterName, Float.class);
         }
 
         SimpleFeatureType newType = builder.buildFeatureType();
