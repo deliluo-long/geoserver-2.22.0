@@ -42,3 +42,7 @@ src/release/installer/win/target/
 # spotless up to date checks
 .spotless-index
 
+# JVM crash logs
+hs_err_pid*.log
+replay_pid*.log
+

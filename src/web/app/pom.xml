@@ -95,10 +95,22 @@
       <artifactId>CalcSlope</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!--    坡向分析-->
+    <dependency>
+      <groupId>org.geoserver</groupId>
+      <artifactId>Aspect</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <!--    重采样-->
     <dependency>
       <groupId>org.geoserver</groupId>
       <artifactId>Resample</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!--    重分类-->
+    <dependency>
+      <groupId>org.geoserver</groupId>
+      <artifactId>Reclassification</artifactId>
       <version>${project.version}</version>
     </dependency>
     <!--    PCA评估-->
@@ -107,6 +119,37 @@
       <artifactId>PCA</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!--    PCA预测潜在分布-->
+    <dependency>
+      <groupId>org.geoserver</groupId>
+      <artifactId>PCALatDis</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!--   HSI预测潜在分布-->
+    <dependency>
+      <groupId>org.geoserver</groupId>
+      <artifactId>HSILatDis</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!--    熵权法评估-->
+    <dependency>
+      <groupId>org.geoserver</groupId>
+      <artifactId>EntropyWeight</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!--    最大熵特征权重-->
+    <dependency>
+      <groupId>org.geoserver</groupId>
+      <artifactId>MEF</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!--    最大熵模型预测潜在分布-->
+    <dependency>
+      <groupId>org.geoserver</groupId>
+      <artifactId>Maxent</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>org.geoserver.web</groupId>
       <artifactId>gs-web-demo</artifactId>
@@ -287,6 +330,10 @@
       <artifactId>javax.servlet-api</artifactId>
       <version>${jetty.servlet-api.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
     </dependency>
   </dependencies>
   <build>

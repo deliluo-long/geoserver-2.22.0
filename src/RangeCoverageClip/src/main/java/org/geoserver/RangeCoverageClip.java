@@ -17,7 +17,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -25,20 +24,17 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.parameter.ParameterValueGroup;
 
-@DescribeProcess(
-        title = "RangeCoverageClip",
-        description = "按范围裁剪栅格"
-)
+@DescribeProcess(title = "RangeCoverageClip", description = "按范围裁剪栅格")
 public class RangeCoverageClip implements GeoServerProcess {
-    public RangeCoverageClip() {
-    }
+    public RangeCoverageClip() {}
 
-    @DescribeResult(
-            name = "outputGridCoverage",
-            description = "输出裁剪结果"
-    )
-    public GridCoverage2D execute(@DescribeParameter(name = "inputGridCoverage",description = "输入待裁剪数据") GridCoverage2D inputGridCoverage,
-                                  @DescribeParameter(name = "clipBoundary",description = "输入裁剪范围") SimpleFeatureCollection clipBoundary) throws Exception {
+    @DescribeResult(name = "outputGridCoverage", description = "输出裁剪结果")
+    public GridCoverage2D execute(
+            @DescribeParameter(name = "inputGridCoverage", description = "输入待裁剪数据")
+                    GridCoverage2D inputGridCoverage,
+            @DescribeParameter(name = "clipBoundary", description = "输入裁剪范围")
+                    SimpleFeatureCollection clipBoundary)
+            throws Exception {
         FeatureIterator<SimpleFeature> iterator = clipBoundary.features();
         List<Geometry> all = new ArrayList<>();
 
@@ -66,7 +62,9 @@ public class RangeCoverageClip implements GeoServerProcess {
             CoverageProcessor processor = new CoverageProcessor();
             ParameterValueGroup params = processor.getOperation("CoverageCrop").getParameters();
             params.parameter("Source").setValue(inputGridCoverage);
-            ReferencedEnvelope referencedEnvelope = new ReferencedEnvelope(envelope, inputGridCoverage.getCoordinateReferenceSystem());
+            ReferencedEnvelope referencedEnvelope =
+                    new ReferencedEnvelope(
+                            envelope, inputGridCoverage.getCoordinateReferenceSystem());
             params.parameter("ENVELOPE").setValue(referencedEnvelope);
             params.parameter("ForceMosaic").setValue(true);
             clippedCoverage = (GridCoverage2D) processor.doOperation(params);
@@ -75,5 +73,3 @@ public class RangeCoverageClip implements GeoServerProcess {
         return clippedCoverage;
     }
 }
-
-

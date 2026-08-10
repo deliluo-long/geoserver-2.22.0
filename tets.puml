@@ -1,0 +1,364 @@
+@startuml
+class org.geoserver.wps.web.RolesAutoCompleteBehavior {
+- {static} long serialVersionUID
+- StringBuilder selectedRoles
+- List<String> availableRoles
+# Iterator<String> getChoices(String)
+}
+class org.geoserver.wps.web.ProcessStatusProvider {
+- {static} Logger LOGGER
+- {static} FilterFactory2 FF
+~ {static} Property<ExecutionStatus> TYPE
+~ {static} Property<ExecutionStatus> NODE
+~ {static} Property<ExecutionStatus> USER
+~ {static} Property<ExecutionStatus> PROCESS
+~ {static} Property<ExecutionStatus> CREATED
+~ {static} Property<ExecutionStatus> PHASE
+~ {static} Property<ExecutionStatus> PROGRESS
+~ {static} Property<ExecutionStatus> EXPIRATION
+~ {static} Property<ExecutionStatus> COMPLETION
+~ {static} Property<ExecutionStatus> NEXT_POLL
+~ {static} Property<ExecutionStatus> TASK
+~ {static} List<Property<ExecutionStatus>> PROPERTIES
+- long first
+- long count
+# List<ExecutionStatus> getItems()
+# List<Property<ExecutionStatus>> getProperties()
+# Filter getFilter()
+- Filter getFullSearch(String[])
+# List<ExecutionStatus> getFilteredItems()
++ Iterator<ExecutionStatus> iterator(long,long)
+}
+class org.geoserver.wps.web.ReferenceConfiguration {
+~ Method method
+~ String url
+~ String body
+~ String mime
++ Method getMethod()
++ String getMime()
++ void setMime(String)
++ void setMethod(Method)
++ String getUrl()
++ void setUrl(String)
++ String getBody()
++ void setBody(String)
+}
+enum org.geoserver.wps.web.Method {
++  GET
++  POST
+}
+class org.geoserver.wps.web.WPSRequestBuilderPanel {
+~ {static} Logger LOGGER
+~ ExecuteRequest execute
+~ String description
+~ ModalWindow responseWindow
+- Component feedback
+- WebMarkupContainer descriptionContainer
+- WebMarkupContainer inputContainer
+- WebMarkupContainer outputContainer
+- ListView<InputParameterValues> inputView
+- ListView<OutputParameter> outputView
+~ String username
+~ String password
+~ boolean authenticate
+- void initProcessView()
+# String getDescribeXML(String)
+~ String buildParamSpec(Parameter<?>)
+# List<InputParameterValues> buildInputParameters(ProcessFactory,Name)
+# List<OutputParameter> buildOutputParameters(ProcessFactory,Name)
+~ List<String> buildProcessList()
++ Component getFeedbackPanel()
+}
+class org.geoserver.wps.web.WPSServiceDescriptionProvider {
+~ {static} Logger LOGGER
++ {static} String SERVICE_TYPE
+~ GeoServer geoserver
+~ Catalog catalog
+# WPSInfo info(WorkspaceInfo,PublishedInfo)
++ List<ServiceDescription> getServices(WorkspaceInfo,PublishedInfo)
++ List<ServiceLinkDescription> getServiceLinks(WorkspaceInfo,PublishedInfo)
+}
+class org.geoserver.wps.web.SubProcessBuilder {
+}
+class org.geoserver.wps.web.ProcessFactoryInfoProvider {
+- List<ProcessGroupInfo> processFactories
+- Locale locale
+# List<Property<ProcessGroupInfo>> getProperties()
+# List<ProcessGroupInfo> getItems()
+}
+class org.geoserver.wps.web.RangePanel {
+# Double min
+# Label minLabel
+# DecimalTextField minInput
+~ void initComponents()
+# void onBeforeRender()
+- void updateFields()
++ RangePanel setReadOnly(boolean)
++ void convertInput()
+# void onModelChanged()
+}
+class org.geoserver.wps.web.RasterLayerConfiguration {
+~ String layerName
+~ ReferencedEnvelope spatialDomain
++ ReferencedEnvelope getSpatialDomain()
++ void setSpatialDomain(ReferencedEnvelope)
++ String getLayerName()
++ void setLayerName(String)
+}
+class org.geoserver.wps.web.WPSAdminPage {
+# Class<WPSInfo> getServiceClass()
+# String getServiceName()
+# void build(IModel,Form)
+# void handleSubmit(WPSInfo)
+}
+class org.geoserver.wps.web.WPSAdminPage$TotalTimeValidator {
+- {static} long serialVersionUID
+- FormComponent<Integer> totalTime
+- FormComponent<Integer> executionTime
++ FormComponent<?>[] getDependentFormComponents()
++ void validate(Form<?>)
+}
+class org.geoserver.wps.web.ProcessStatusPage {
+- GeoServerTablePanel<ExecutionStatus> table
+- AjaxLink<Void> dismissSelected
+- GeoServerDialog dialog
+# Component headerPanel()
+}
+class org.geoserver.wps.web.ProcessStatusPage$ProcessDismissLink {
++ void onClick(AjaxRequestTarget)
+}
+class org.geoserver.wps.web.BoundingBoxInputPanel {
+- DropDownChoice typeChoice
+~ PropertyModel<Object> valueModel
+~ List<String> mimeTypes
+~ void updateEditor()
+~ List<String> getVectorLayerNames()
+~ List<String> getRasterLayerNames()
+}
+class org.geoserver.wps.web.InputParameterValues {
+~ Name processName
+~ String paramName
+~ List<ParameterValue> values
+- ParameterType guessBestType()
++ List<ParameterType> getSupportedTypes()
+~ String getDefaultMime()
++ List<String> getSupportedMime()
++ boolean isEnum()
++ boolean isComplex()
++ boolean isBoundingBox()
++ boolean isCoordinateReferenceSystem()
+~ List<ProcessParameterIO> getProcessParameterIO()
+~ ProcessFactory getProcessFactory()
+~ Parameter<?> getParameter()
+}
+enum org.geoserver.wps.web.ParameterType {
++  LITERAL
++  TEXT
++  VECTOR_LAYER
++  RASTER_LAYER
++  REFERENCE
++  SUBPROCESS
+}
+class org.geoserver.wps.web.InputParameterValues$ParameterValue {
+~ ParameterType type
+~ String mime
+~ Serializable value
++ ParameterType getType()
++ void setType(ParameterType)
++ String getMime()
++ void setMime(String)
++ Serializable getValue()
++ void setValue(Serializable)
+}
+class org.geoserver.wps.web.WPSRequestBuilder {
++ {static} String PARAM_NAME
+~ ModalWindow responseWindow
+~ WPSRequestBuilderPanel builder
+~ String getRequestXML()
+}
+class org.geoserver.wps.web.RolesRenderer {
+- {static} long serialVersionUID
+- StringBuilder selectedRoles
+# void renderChoice(String,Response,String)
+# String getTextValue(String)
+}
+class org.geoserver.wps.web.ComplexInputPanel {
+~ {static} Logger LOGGER
+- DropDownChoice typeChoice
+~ PropertyModel<Object> valueModel
+~ List<String> mimeTypes
+~ ModalWindow subprocesswindow
+~ void updateEditor()
+~ String getExecuteXML()
+~ List<String> getVectorLayerNames()
+~ List<String> getRasterLayerNames()
+}
+class org.geoserver.wps.web.WPSAccessRulePage {
+~ {static} List<CatalogMode> CATALOG_MODES
+- List<ProcessGroupInfo> processFactories
+- WPSInfo wpsInfo
+- RadioChoice catalogModeChoice
+- List<String> availableRoles
+- void saveProcessFactories(boolean)
+- List<ProcessGroupInfo> cloneFactoryInfos(List<ProcessGroupInfo>)
+}
+class org.geoserver.wps.web.WPSAccessRulePage$CatalogModeRenderer {
++ Object getDisplayValue(CatalogMode)
++ String getIdValue(CatalogMode,int)
+}
+class org.geoserver.wps.web.FilteredProcessesProvider {
+- List<FilteredProcess> selectableProcesses
+# List<Property<FilteredProcess>> getProperties()
+# List<FilteredProcess> getItems()
+}
+class org.geoserver.wps.web.FilteredProcessesProvider$FilteredProcess {
+- boolean enabled
+- Name name
+- String description
+- List<String> roles
+- Multimap<String,WPSInputValidator> validators
++ Name getName()
++ String getDescription()
++ List<String> getRoles()
++ void setRoles(List<String>)
++ boolean getEnabled()
++ void setEnabled(boolean)
++ int compareTo(FilteredProcess)
++ ProcessInfo toProcessInfo()
++ Multimap<String,WPSInputValidator> getValidators()
++ void setValidators(Multimap<String,WPSInputValidator>)
++ boolean isValidated()
+}
+class org.geoserver.wps.web.VectorLayerConfiguration {
+~ String layerName
+~ List<String> attributes
+~ String filter
++ String getLayerName()
++ void setLayerName(String)
++ List<String> getAttributes()
++ void setAttributes(List<String>)
++ String getFilter()
++ void setFilter(String)
+}
+class org.geoserver.wps.web.OutputParameter {
+~ Name processName
+~ String paramName
+~ String mimeType
+~ boolean include
+~ String getDefaultMime()
++ List<String> getSupportedMime()
++ boolean isComplex()
+~ List<ProcessParameterIO> getProcessParameterIO()
+~ ProcessFactory getProcessFactory()
+~ Parameter<?> getParameter()
+}
+class org.geoserver.wps.web.WPSExecuteTransformer {
+~ {static} Logger LOGGER
+- EntityResolver2 entityResolver
+~ Catalog catalog
++ Translator createTranslator(ContentHandler)
++ void setEntityResolver(EntityResolver)
++ EntityResolver getEntityResolver()
+}
+class org.geoserver.wps.web.WPSExecuteTransformer$ExecuteRequestTranslator {
+# {static} String WFS_URI
+# {static} String WPS_URI
+# {static} String WCS_URI
+# {static} String XSI_PREFIX
+# {static} String XSI_URI
++ void encode(Object)
+- void encode(ExecuteRequest,boolean)
+~ AttributesImpl attributes(String)
++ void handleInputs(List<InputParameterValues>)
+- void handleCoordinateReferenceSystem(ParameterValue)
+- void handleRasterLayerInput(ParameterValue)
+- void handleVectorInput(ParameterValue)
++ void handleReferenceInput(ParameterValue)
+- void handleSubprocessInput(ParameterValue)
+- void handleTextInput(ParameterValue)
+- void dumpAsXML(Document)
+- Document parseAsXML(String)
++ void handleOutputs(List<OutputParameter>)
+}
+class org.geoserver.wps.web.ProcessSelectionPage {
+- String title
+- GeoServerTablePanel<FilteredProcess> processSelector
+- ProcessGroupInfo pfi
+- List<String> availableRoles
+# Collection<? extends Name> getFilteredProcesses()
+# String getDescription()
+}
+class org.geoserver.wps.web.RolesConverter {
+- {static} long serialVersionUID
+- List<String> availableRoles
++ Object convertToObject(String,Locale)
++ String convertToString(Object,Locale)
+}
+class org.geoserver.wps.web.ExecuteRequest {
+~ String processName
+~ List<InputParameterValues> inputs
+~ List<OutputParameter> outputs
+}
+class org.geoserver.wps.web.EnumPanel {
+}
+class org.geoserver.wps.web.ProcessLimitsPage {
+- {static} Set<Class<?>> PRIMITIVE_NUMBERS
+- GeoServerTablePanel<InputLimit> table
+- FilteredProcess process
+# Multimap<String,WPSInputValidator> buildValidators(List<InputLimit>)
+- List<InputLimit> buildInputLimits(FilteredProcess)
+- boolean isNumeric(Parameter)
+# String getTitle()
+}
+class org.geoserver.wps.web.ProcessLimitsPage$InputLimit {
+- {static} long serialVersionUID
+~ String name
+~ WPSInputValidator validator
++ String toString()
++ String getName()
++ WPSInputValidator getValidator()
+}
+
+
+org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteBehavior <|-- org.geoserver.wps.web.RolesAutoCompleteBehavior
+org.geoserver.web.wicket.GeoServerDataProvider <|-- org.geoserver.wps.web.ProcessStatusProvider
+java.io.Serializable <|.. org.geoserver.wps.web.ReferenceConfiguration
+org.apache.wicket.markup.html.panel.Panel <|-- org.geoserver.wps.web.WPSRequestBuilderPanel
+org.geoserver.web.ServiceDescriptionProvider <|-- org.geoserver.wps.web.WPSServiceDescriptionProvider
+org.apache.wicket.markup.html.WebPage <|-- org.geoserver.wps.web.SubProcessBuilder
+org.geoserver.web.wicket.GeoServerDataProvider <|-- org.geoserver.wps.web.ProcessFactoryInfoProvider
+org.apache.wicket.markup.html.form.FormComponentPanel <|-- org.geoserver.wps.web.RangePanel
+java.io.Serializable <|.. org.geoserver.wps.web.RasterLayerConfiguration
+org.geoserver.web.services.BaseServiceAdminPage <|-- org.geoserver.wps.web.WPSAdminPage
+org.geoserver.wps.web.WPSAdminPage +.. org.geoserver.wps.web.WPSAdminPage$TotalTimeValidator
+org.geoserver.wps.web.AbstractFormValidator <|-- org.geoserver.wps.web.WPSAdminPage$TotalTimeValidator
+org.geoserver.web.GeoServerSecuredPage <|-- org.geoserver.wps.web.ProcessStatusPage
+org.geoserver.wps.web.ProcessStatusPage +.. org.geoserver.wps.web.ProcessStatusPage$ProcessDismissLink
+org.geoserver.wps.web.AjaxLink <|-- org.geoserver.wps.web.ProcessStatusPage$ProcessDismissLink
+org.apache.wicket.markup.html.panel.Panel <|-- org.geoserver.wps.web.BoundingBoxInputPanel
+java.io.Serializable <|.. org.geoserver.wps.web.InputParameterValues
+org.geoserver.wps.web.InputParameterValues +.. org.geoserver.wps.web.InputParameterValues$ParameterValue
+org.geoserver.wps.web.Serializable <|.. org.geoserver.wps.web.InputParameterValues$ParameterValue
+org.geoserver.web.GeoServerBasePage <|-- org.geoserver.wps.web.WPSRequestBuilder
+org.apache.wicket.extensions.ajax.markup.html.autocomplete.AbstractAutoCompleteRenderer <|-- org.geoserver.wps.web.RolesRenderer
+org.apache.wicket.markup.html.panel.Panel <|-- org.geoserver.wps.web.ComplexInputPanel
+org.geoserver.security.web.AbstractSecurityPage <|-- org.geoserver.wps.web.WPSAccessRulePage
+org.geoserver.wps.web.WPSAccessRulePage +.. org.geoserver.wps.web.WPSAccessRulePage$CatalogModeRenderer
+org.geoserver.wps.web.ChoiceRenderer <|-- org.geoserver.wps.web.WPSAccessRulePage$CatalogModeRenderer
+org.geoserver.web.wicket.GeoServerDataProvider <|-- org.geoserver.wps.web.FilteredProcessesProvider
+org.geoserver.wps.web.FilteredProcessesProvider +.. org.geoserver.wps.web.FilteredProcessesProvider$FilteredProcess
+org.geoserver.wps.web.Serializable <|.. org.geoserver.wps.web.FilteredProcessesProvider$FilteredProcess
+org.geoserver.wps.web.Comparable <|.. org.geoserver.wps.web.FilteredProcessesProvider$FilteredProcess
+java.io.Serializable <|.. org.geoserver.wps.web.VectorLayerConfiguration
+java.io.Serializable <|.. org.geoserver.wps.web.OutputParameter
+org.geotools.xml.transform.TransformerBase <|-- org.geoserver.wps.web.WPSExecuteTransformer
+org.geoserver.wps.web.WPSExecuteTransformer +.. org.geoserver.wps.web.WPSExecuteTransformer$ExecuteRequestTranslator
+org.geoserver.wps.web.TranslatorSupport <|-- org.geoserver.wps.web.WPSExecuteTransformer$ExecuteRequestTranslator
+org.geoserver.security.web.AbstractSecurityPage <|-- org.geoserver.wps.web.ProcessSelectionPage
+org.apache.wicket.util.convert.IConverter <|.. org.geoserver.wps.web.RolesConverter
+java.io.Serializable <|.. org.geoserver.wps.web.ExecuteRequest
+org.apache.wicket.markup.html.panel.Panel <|-- org.geoserver.wps.web.EnumPanel
+org.geoserver.web.GeoServerSecuredPage <|-- org.geoserver.wps.web.ProcessLimitsPage
+org.geoserver.wps.web.ProcessLimitsPage +.. org.geoserver.wps.web.ProcessLimitsPage$InputLimit
+org.geoserver.wps.web.Serializable <|.. org.geoserver.wps.web.ProcessLimitsPage$InputLimit
+@enduml

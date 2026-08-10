@@ -1,0 +1,35 @@
+@startuml
+class org.geoserver.wps.web.WPSExecuteTransformer {
+~ {static} Logger LOGGER
+- EntityResolver2 entityResolver
+~ Catalog catalog
++ Translator createTranslator(ContentHandler)
++ void setEntityResolver(EntityResolver)
++ EntityResolver getEntityResolver()
+}
+class org.geoserver.wps.web.WPSExecuteTransformer$ExecuteRequestTranslator {
+# {static} String WFS_URI
+# {static} String WPS_URI
+# {static} String WCS_URI
+# {static} String XSI_PREFIX
+# {static} String XSI_URI
++ void encode(Object)
+- void encode(ExecuteRequest,boolean)
+~ AttributesImpl attributes(String)
++ void handleInputs(List<InputParameterValues>)
+- void handleCoordinateReferenceSystem(ParameterValue)
+- void handleRasterLayerInput(ParameterValue)
+- void handleVectorInput(ParameterValue)
++ void handleReferenceInput(ParameterValue)
+- void handleSubprocessInput(ParameterValue)
+- void handleTextInput(ParameterValue)
+- void dumpAsXML(Document)
+- Document parseAsXML(String)
++ void handleOutputs(List<OutputParameter>)
+}
+
+
+org.geotools.xml.transform.TransformerBase <|-- org.geoserver.wps.web.WPSExecuteTransformer
+org.geoserver.wps.web.WPSExecuteTransformer +.. org.geoserver.wps.web.WPSExecuteTransformer$ExecuteRequestTranslator
+org.geoserver.wps.web.TranslatorSupport <|-- org.geoserver.wps.web.WPSExecuteTransformer$ExecuteRequestTranslator
+@enduml

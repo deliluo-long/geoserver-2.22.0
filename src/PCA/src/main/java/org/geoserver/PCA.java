@@ -1,30 +1,19 @@
 package org.geoserver;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import org.geoserver.wps.gs.GeoServerProcess;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.coverage.grid.io.GridFormatFinder;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.util.factory.Hints;
 
-import java.awt.image.Raster;
-import java.awt.image.RenderedImage;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-
-@DescribeProcess(title="PCA", description="主成分分析法确定因子权重")
+@DescribeProcess(title = "PCA", description = "主成分分析法确定因子权重")
 public class PCA implements GeoServerProcess {
-    public PCA() {
-    }
+    public PCA() {}
+
     public static void convertToTiff(GridCoverage2D gridCoverage, String outputFilePath) {
         try {
             // 创建 GeoTiffWriter 实例
@@ -40,27 +29,54 @@ public class PCA implements GeoServerProcess {
             e.printStackTrace();
         }
     }
-    @DescribeResult(name="result", description="output result")
-    public String execute(       @DescribeParameter(name = "inputRaster1",description = "输入遥感影像",max = 1,min = 1) GridCoverage2D raster1,
-                                 @DescribeParameter(name = "inputRasterName1",description = "输入对应字段名",max = 1,min = 1) String rasterName1,
-                                 @DescribeParameter(name = "inputRaster2",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster2,
-                                 @DescribeParameter(name = "inputRasterName2",description = "输入对应字段名",max = 1,min = 0) String rasterName2,
-                                 @DescribeParameter(name = "inputRaster3",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster3,
-                                 @DescribeParameter(name = "inputRasterName3",description = "输入对应字段名",max = 1,min = 0) String rasterName3,
-                                 @DescribeParameter(name = "inputRaster4",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster4,
-                                 @DescribeParameter(name = "inputRasterName4",description = "输入对应字段名",max = 1,min = 0) String rasterName4,
-                                 @DescribeParameter(name = "inputRaster5",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster5,
-                                 @DescribeParameter(name = "inputRasterName5",description = "输入对应字段名",max = 1,min = 0) String rasterName5,
-                                 @DescribeParameter(name = "inputRaster6",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster6,
-                                 @DescribeParameter(name = "inputRasterName6",description = "输入对应字段名",max = 1,min = 0) String rasterName6,
-                                 @DescribeParameter(name = "inputRaster7",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster7,
-                                 @DescribeParameter(name = "inputRasterName7",description = "输入对应字段名",max = 1,min = 0) String rasterName7,
-                                 @DescribeParameter(name = "inputRaster8",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster8,
-                                 @DescribeParameter(name = "inputRasterName8",description = "输入对应字段名",max = 1,min = 0) String rasterName8,
-                                 @DescribeParameter(name = "inputRaster9",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster9,
-                                 @DescribeParameter(name = "inputRasterName9",description = "输入对应字段名",max = 1,min = 0) String rasterName9,
-                                 @DescribeParameter(name = "inputRaster10",description = "输入遥感影像",max = 1,min = 0) GridCoverage2D raster10,
-                                 @DescribeParameter(name = "inputRasterName10",description = "输入对应字段名",max = 1,min = 0) String rasterName10) throws IOException, InterruptedException {
+
+    @DescribeResult(name = "result", description = "输出PCA评估结果")
+    public String execute(
+            @DescribeParameter(name = "inputRaster1", description = "输入遥感影像", max = 1, min = 1)
+                    GridCoverage2D raster1,
+            @DescribeParameter(name = "inputRasterName1", description = "输入对应字段名", max = 1, min = 1)
+                    String rasterName1,
+            @DescribeParameter(name = "inputRaster2", description = "输入遥感影像", max = 1, min = 0)
+                    GridCoverage2D raster2,
+            @DescribeParameter(name = "inputRasterName2", description = "输入对应字段名", max = 1, min = 0)
+                    String rasterName2,
+            @DescribeParameter(name = "inputRaster3", description = "输入遥感影像", max = 1, min = 0)
+                    GridCoverage2D raster3,
+            @DescribeParameter(name = "inputRasterName3", description = "输入对应字段名", max = 1, min = 0)
+                    String rasterName3,
+            @DescribeParameter(name = "inputRaster4", description = "输入遥感影像", max = 1, min = 0)
+                    GridCoverage2D raster4,
+            @DescribeParameter(name = "inputRasterName4", description = "输入对应字段名", max = 1, min = 0)
+                    String rasterName4,
+            @DescribeParameter(name = "inputRaster5", description = "输入遥感影像", max = 1, min = 0)
+                    GridCoverage2D raster5,
+            @DescribeParameter(name = "inputRasterName5", description = "输入对应字段名", max = 1, min = 0)
+                    String rasterName5,
+            @DescribeParameter(name = "inputRaster6", description = "输入遥感影像", max = 1, min = 0)
+                    GridCoverage2D raster6,
+            @DescribeParameter(name = "inputRasterName6", description = "输入对应字段名", max = 1, min = 0)
+                    String rasterName6,
+            @DescribeParameter(name = "inputRaster7", description = "输入遥感影像", max = 1, min = 0)
+                    GridCoverage2D raster7,
+            @DescribeParameter(name = "inputRasterName7", description = "输入对应字段名", max = 1, min = 0)
+                    String rasterName7,
+            @DescribeParameter(name = "inputRaster8", description = "输入遥感影像", max = 1, min = 0)
+                    GridCoverage2D raster8,
+            @DescribeParameter(name = "inputRasterName8", description = "输入对应字段名", max = 1, min = 0)
+                    String rasterName8,
+            @DescribeParameter(name = "inputRaster9", description = "输入遥感影像", max = 1, min = 0)
+                    GridCoverage2D raster9,
+            @DescribeParameter(name = "inputRasterName9", description = "输入对应字段名", max = 1, min = 0)
+                    String rasterName9,
+            @DescribeParameter(name = "inputRaster10", description = "输入遥感影像", max = 1, min = 0)
+                    GridCoverage2D raster10,
+            @DescribeParameter(
+                            name = "inputRasterName10",
+                            description = "输入对应字段名",
+                            max = 1,
+                            min = 0)
+                    String rasterName10)
+            throws IOException, InterruptedException {
 
         convertToTiff(raster1, "./src/main/webapp/data/python/PCA/inputGridCoverage1.tif");
         List<String> rasterNameList = new ArrayList();
@@ -107,26 +123,38 @@ public class PCA implements GeoServerProcess {
             rasterNameList.add(rasterName10);
         }
         // 构造 ProcessBuilder 对象
-        ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "D:\\Program Files (x86)\\QGIS\\bin\\python-qgis.bat", "./src/main/webapp/data/python/PCA_Cal_Weight.py");
+        ProcessBuilder pb =
+                new ProcessBuilder(
+                        "cmd.exe",
+                        "/c",
+                        "D:\\Program Files (x86)\\QGIS\\bin\\python-qgis.bat",
+                        "./src/main/webapp/data/python/PCA_Cal_Weight.py");
         // 启动进程
         Process process = pb.start();
-        //获取进程的输出流
+        // 获取进程的输出流
         OutputStreamWriter streamWriter = new OutputStreamWriter(process.getOutputStream());
         BufferedWriter bufferedWriter = new BufferedWriter(streamWriter);
-        // 将 sourcePixelValue 发送给 Python
+        //  发送给 Python
         for (String rasterName : rasterNameList) {
             bufferedWriter.write(rasterName);
             bufferedWriter.newLine();
             bufferedWriter.flush();
         }
+        // 关闭发送给 Python 的输入流
+        bufferedWriter.close();
         // 读取进程输出
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String line;
+        StringBuilder outputBuilder = new StringBuilder();
         while ((line = reader.readLine()) != null) {
-            System.out.println(line);
+            // 关闭进程输出流
+            outputBuilder.append(line).append("\n");
         }
+        // 关闭进程输出流
+        reader.close();
         // 读取进程错误输出
-        BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+        BufferedReader errorReader =
+                new BufferedReader(new InputStreamReader(process.getErrorStream()));
         String errorLine;
         while ((errorLine = errorReader.readLine()) != null) {
             System.err.println(errorLine);
@@ -135,16 +163,11 @@ public class PCA implements GeoServerProcess {
         int exitCode = process.waitFor();
         if (exitCode == 0) {
             System.out.println("Python 脚本运行成功！");
-            String content = "";
-            try {
-                content = new String(Files.readAllBytes(Paths.get("./src/main/webapp/data/python/PCA/outputResult.txt")));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return content;
-        }  else {
-        System.err.println("Python 脚本运行失败，错误码：" + exitCode);
-    }
+            String output = outputBuilder.toString();
+            return output;
+        } else {
+            System.err.println("Python 脚本运行失败，错误码：" + exitCode);
+        }
         return null;
     }
 }

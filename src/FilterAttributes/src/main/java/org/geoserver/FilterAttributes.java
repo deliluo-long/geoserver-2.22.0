@@ -21,32 +21,30 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
-@DescribeProcess(
-        title = "FilterAttributes",
-        description = "矢量属性有效数据筛选"
-)
+@DescribeProcess(title = "FilterAttributes", description = "矢量属性有效数据筛选")
 public class FilterAttributes implements GeoServerProcess {
-    public FilterAttributes() {
-    }
+    public FilterAttributes() {}
 
-    @DescribeResult(
-            name = "outputFeatures",
-            description = "输出筛选数据"
-    )
-    public SimpleFeatureCollection execute(@DescribeParameter(name = "inputFeatures",description = "输入待筛选数据") SimpleFeatureCollection inputFeatures,
-                                           @DescribeParameter(name = "percentage",description = "输入百分比阈值") int percentage) throws Exception {
-        int numAttributes = ((SimpleFeatureType)inputFeatures.getSchema()).getAttributeCount();
+    @DescribeResult(name = "outputFeatures", description = "输出筛选数据")
+    public SimpleFeatureCollection execute(
+            @DescribeParameter(name = "inputFeatures", description = "输入待筛选数据")
+                    SimpleFeatureCollection inputFeatures,
+            @DescribeParameter(name = "percentage", description = "输入百分比阈值") int percentage)
+            throws Exception {
+        int numAttributes = ((SimpleFeatureType) inputFeatures.getSchema()).getAttributeCount();
         int[] validCounts = new int[numAttributes];
         SimpleFeatureIterator it = inputFeatures.features();
         Throwable var6 = null;
 
         try {
-            while(it.hasNext()) {
-                SimpleFeature feature = (SimpleFeature)it.next();
+            while (it.hasNext()) {
+                SimpleFeature feature = (SimpleFeature) it.next();
 
-                for(int i = 0; i < numAttributes; ++i) {
+                for (int i = 0; i < numAttributes; ++i) {
                     Object value = feature.getAttribute(i);
-                    if (value != null && (!(value instanceof Number) || ((Number)value).doubleValue() != 0.0)) {
+                    if (value != null
+                            && (!(value instanceof Number)
+                                    || ((Number) value).doubleValue() != 0.0)) {
                         int var10002 = validCounts[i]++;
                     }
                 }
@@ -66,17 +64,17 @@ public class FilterAttributes implements GeoServerProcess {
                     it.close();
                 }
             }
-
         }
 
-        SimpleFeatureType inputSchema = (SimpleFeatureType)inputFeatures.getSchema();
+        SimpleFeatureType inputSchema = (SimpleFeatureType) inputFeatures.getSchema();
         SimpleFeatureTypeBuilder schemaBuilder = new SimpleFeatureTypeBuilder();
         schemaBuilder.setName(inputSchema.getName());
         List<AttributeDescriptor> attributeDescriptors = new ArrayList();
         List<Integer> retainIndices = new ArrayList();
         System.out.println(numAttributes);
-        int minValidCount= (inputFeatures.size()* percentage) / 100;;
-        for(int i = 0; i < numAttributes; ++i) {
+        int minValidCount = (inputFeatures.size() * percentage) / 100;
+        ;
+        for (int i = 0; i < numAttributes; ++i) {
             if (validCounts[i] >= minValidCount) {
                 retainIndices.add(i);
                 AttributeDescriptor descriptor = inputSchema.getDescriptor(i);
@@ -95,17 +93,17 @@ public class FilterAttributes implements GeoServerProcess {
         Throwable var13 = null;
 
         try {
-            while(it.hasNext()) {
-                SimpleFeature inputFeature = (SimpleFeature)it.next();
+            while (it.hasNext()) {
+                SimpleFeature inputFeature = (SimpleFeature) it.next();
                 featureBuilder.reset();
                 Iterator var15 = retainIndices.iterator();
 
-                while(var15.hasNext()) {
-                    Integer i = (Integer)var15.next();
+                while (var15.hasNext()) {
+                    Integer i = (Integer) var15.next();
                     featureBuilder.add(inputFeature.getAttribute(i));
                 }
 
-                SimpleFeature newFeature = featureBuilder.buildFeature((String)null);
+                SimpleFeature newFeature = featureBuilder.buildFeature((String) null);
                 features.add(newFeature);
                 System.out.println(newFeature.getAttributes());
             }
@@ -124,7 +122,6 @@ public class FilterAttributes implements GeoServerProcess {
                     it.close();
                 }
             }
-
         }
 
         return DataUtilities.collection(features);

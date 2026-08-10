@@ -25,34 +25,30 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.parameter.ParameterValueGroup;
 
-@DescribeProcess(
-        title = "CoverageClip",
-        description = "掩膜提取"
-)
+@DescribeProcess(title = "CoverageClip", description = "掩膜提取")
 public class CoverageClip implements GeoServerProcess {
-    public CoverageClip() {
-    }
+    public CoverageClip() {}
 
-    @DescribeResult(
-            name = "outputGridCoverage",
-            description = "输出裁剪结果"
-    )
-    public GridCoverage2D execute(@DescribeParameter(name = "inputGridCoverage",description = "输入待裁剪数据") GridCoverage2D inputGridCoverage,
-                                  @DescribeParameter(name = "clipBoundary",description = "输入裁剪范围") SimpleFeatureCollection clipBoundry) throws Exception {
-        FeatureIterator<SimpleFeature> iterator = clipBoundry.features();
+    @DescribeResult(name = "outputGridCoverage", description = "输出裁剪结果")
+    public GridCoverage2D execute(
+            @DescribeParameter(name = "inputGridCoverage", description = "输入待裁剪数据")
+                    GridCoverage2D inputGridCoverage,
+            @DescribeParameter(name = "clipBoundary", description = "输入裁剪范围")
+                    SimpleFeatureCollection clipBoundary)
+            throws Exception {
+        FeatureIterator<SimpleFeature> iterator = clipBoundary.features();
         List<Geometry> all = new ArrayList();
 
         try {
-            while(iterator.hasNext()) {
-                SimpleFeature feature = (SimpleFeature)iterator.next();
-                Geometry geometry = (Geometry)feature.getDefaultGeometry();
+            while (iterator.hasNext()) {
+                SimpleFeature feature = (SimpleFeature) iterator.next();
+                Geometry geometry = (Geometry) feature.getDefaultGeometry();
                 all.add(geometry);
             }
         } finally {
             if (iterator != null) {
                 iterator.close();
             }
-
         }
 
         GridCoverage2D clippedCoverage = null;
@@ -60,22 +56,23 @@ public class CoverageClip implements GeoServerProcess {
             CoverageProcessor processor = new CoverageProcessor();
             ParameterValueGroup params = processor.getOperation("CoverageCrop").getParameters();
             params.parameter("Source").setValue(inputGridCoverage);
-            GeometryFactory factory = JTSFactoryFinder.getGeometryFactory((Hints)null);
-            Geometry[] a = (Geometry[])all.toArray(new Geometry[0]);
+            GeometryFactory factory = JTSFactoryFinder.getGeometryFactory((Hints) null);
+            Geometry[] a = (Geometry[]) all.toArray(new Geometry[0]);
             GeometryCollection c = new GeometryCollection(a, factory);
-            Envelope envelope = ((Geometry)all.get(0)).getEnvelopeInternal();
+            Envelope envelope = ((Geometry) all.get(0)).getEnvelopeInternal();
             double x1 = envelope.getMinX();
             double y1 = envelope.getMinY();
             double x2 = envelope.getMaxX();
             double y2 = envelope.getMaxY();
-            ReferencedEnvelope referencedEnvelope = new ReferencedEnvelope(x1, x2, y1, y2, inputGridCoverage.getCoordinateReferenceSystem());
+            ReferencedEnvelope referencedEnvelope =
+                    new ReferencedEnvelope(
+                            x1, x2, y1, y2, inputGridCoverage.getCoordinateReferenceSystem());
             params.parameter("ENVELOPE").setValue(referencedEnvelope);
             params.parameter("ROI").setValue(c);
             params.parameter("ForceMosaic").setValue(true);
-            clippedCoverage = (GridCoverage2D)processor.doOperation(params);
+            clippedCoverage = (GridCoverage2D) processor.doOperation(params);
         }
 
         return clippedCoverage;
     }
 }
-

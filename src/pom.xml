@@ -32,7 +32,7 @@
     <module>security</module>
     <module>wcs</module>
     <module>wcs1_0</module>
-    <module>wcs1_1</module>
+    <!-- <module>wcs1_1</module> -->
     <module>wcs2_0</module>
     <module>wfs</module>
     <module>wms</module>
@@ -49,18 +49,23 @@
     <module>web</module>
     <module>community</module>
     <module>extension</module>
-      <module>FilterAttributes</module>
-      <module>EuclideanDistance</module>
-      <module>CoverageClip</module>
-      <module>PointExtraction</module>
-      <module>RangeCoverageClip</module>
+    <module>FilterAttributes</module>
+    <module>EuclideanDistance</module>
+    <module>CoverageClip</module>
+    <module>PointExtraction</module>
+    <module>RangeCoverageClip</module>
     <module>Reprojection</module>
     <module>CalcSlope</module>
-    <module>CalcSlope</module>
-    <module>CalcSlope</module>
     <module>PCA</module>
-      <module>Resample</module>
-      <!--    <module>RangeCoverageClip</module>-->
+    <module>Resample</module>
+    <module>PCALatDis</module>
+    <module>EntropyWeight</module>
+    <module>Reclassification</module>
+    <module>Aspect</module>
+    <module>HSILatDis</module>
+    <module>Maxent</module>
+    <module>MEF</module>
+    <!--    <module>RangeCoverageClip</module>-->
   </modules>
 
   <scm>
@@ -2688,20 +2693,20 @@
       </build>
     </profile>
   </profiles>
-<!--  <repositories>-->
-<!--    <repository>-->
-<!--      <id>osgeo</id>-->
-<!--      <name>OSGeo Release Repository</name>-->
-<!--      <url>https://repo.osgeo.org/repository/release/</url>-->
-<!--      <snapshots><enabled>false</enabled></snapshots>-->
-<!--      <releases><enabled>true</enabled></releases>-->
-<!--    </repository>-->
-<!--    <repository>-->
-<!--      <id>osgeo-snapshot</id>-->
-<!--      <name>OSGeo Snapshot Repository</name>-->
-<!--      <url>https://repo.osgeo.org/repository/snapshot/</url>-->
-<!--      <snapshots><enabled>true</enabled></snapshots>-->
-<!--      <releases><enabled>false</enabled></releases>-->
-<!--    </repository>-->
-<!--  </repositories>-->
+  <!--  <repositories>-->
+  <!--    <repository>-->
+  <!--      <id>osgeo</id>-->
+  <!--      <name>OSGeo Release Repository</name>-->
+  <!--      <url>https://repo.osgeo.org/repository/release/</url>-->
+  <!--      <snapshots><enabled>false</enabled></snapshots>-->
+  <!--      <releases><enabled>true</enabled></releases>-->
+  <!--    </repository>-->
+  <!--    <repository>-->
+  <!--      <id>osgeo-snapshot</id>-->
+  <!--      <name>OSGeo Snapshot Repository</name>-->
+  <!--      <url>https://repo.osgeo.org/repository/snapshot/</url>-->
+  <!--      <snapshots><enabled>true</enabled></snapshots>-->
+  <!--      <releases><enabled>false</enabled></releases>-->
+  <!--    </repository>-->
+  <!--  </repositories>-->
 </project>
